@@ -12,7 +12,7 @@
 		"preventDuplicates": false,
     }
 
-    let somethingWasTouched = false, cardNumberWasTouched = false, expDateWasTouched = false, CVVWasTouched = false, triedWithEmpty = false;
+    let somethingWasTouched = false, cardNumberWasTouched = false, expDateWasTouched = false, CCVWasTouched = false, triedWithEmpty = false;
 
 	const getUserCards = async () => {
 		const cards = await jq.ajax({
@@ -50,7 +50,7 @@
         somethingWasTouched = true;
 		if(input === 'cardNumber') {cardNumberWasTouched = true};
 		if(input === 'expDate') {expDateWasTouched = true};
-		if(input === 'CVV') {CVVWasTouched = true};
+		if(input === 'CCV') {CCVWasTouched = true};
 	}
 
 	const validateInput = (elmValue, input) => {
@@ -63,7 +63,7 @@
 			case 'expDate':
 				isValid = (elmValue.replace(/ /g,'').length === 7 && /^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/.test(elmValue.replace(/ /g,'')) );
 				break;
-			case 'CVV':
+			case 'CCV':
 				isValid = (elmValue.replace(/ /g,'').length === 3 && /^\d+$/.test(elmValue.replace(/ /g,''))) ? true : false;
 				break;
 			default:
@@ -73,7 +73,7 @@
 		return isValid;
     }
     
-    const toEditCard = (card_id, card_expDate, CVV) => {
+    const toEditCard = (card_id, card_expDate, CCV) => {
         if(areThereErrors()) {
             toastr.error('Please make sure all the fields are completed and valid!');
             return;
@@ -82,7 +82,7 @@
             toastr.error('Your card is expired! Please use a valid card');
             return;
         }
-		if(validateInput(card_expDate, 'expDate') && validateInput(CVV, 'CVV') && somethingWasTouched) {
+		if(validateInput(card_expDate, 'expDate') && validateInput(CCV, 'CCV') && somethingWasTouched) {
             const card_expMonth = card_expDate.split('/')[0];
             const card_expYear = card_expDate.split('/')[1];
 			jq.ajax({
@@ -93,7 +93,7 @@
                     card_id: card_id,
                     card_expMonth: card_expMonth,
                     card_expYear: card_expYear,
-                    card_CVV: CVV,
+                    card_CCV: CCV,
 					token: localStorage.token
 				},
 				success: (data) => {
@@ -278,7 +278,7 @@
                     </div>
                     <div class="wrap_input_container">
                         <div class="wrap_buttons_edit_cards">
-                            <button class="purple_button edit_card_button" on:click={() => toEditCard(card.id, card.expDate, card.CVV)}>Edit card</button>
+                            <button class="purple_button edit_card_button" on:click={() => toEditCard(card.id, card.expDate, card.CCV)}>Edit card</button>
                         </div>
 				    </div>
                 </div>
@@ -286,12 +286,12 @@
                     <div class="wrap_input_container">
                         <div class="inputElement">
                             <label for="text">
-                                CVV
+                                CCV
                             </label>
-                            <input type="text" bind:value={card.CVV} placeholder="ex. 865" on:input={() => setFirstTouched('CVV')} />
+                            <input type="text" bind:value={card.CCV} placeholder="ex. 865" on:input={() => setFirstTouched('CCV')} />
                         </div>
-                        {#if (!(validateInput(card.CVV, 'CVV')) && CVVWasTouched) || (!(validateInput(card.CVV, 'CVV')) && triedWithEmpty) }
-						<div class="error">CVV needs 3 numbers!</div>
+                        {#if (!(validateInput(card.CCV, 'CCV')) && CCVWasTouched) || (!(validateInput(card.CCV, 'CCV')) && triedWithEmpty) }
+						<div class="error">CCV needs 3 numbers!</div>
                         {/if}
                     </div>
                     {#if card.isPrimary !== 1}

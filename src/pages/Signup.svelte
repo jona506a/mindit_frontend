@@ -6,11 +6,11 @@
 	const basicURL = 'https://peaceful-spire-31023.herokuapp.com/apis/';	
 
 	let userData = {
-        firstName: '', lastName: '', username: '', email: '', password: '', cardNumber: '', CVV: '', expDate: ''
+        firstName: '', lastName: '', username: '', email: '', password: '', cardNumber: '', CCV: '', expDate: ''
     };
 
 	let smthWasTouched = false, firstNameWasTouched = false, lastNameWasTouched = false, usernameWasTouched = false, passwordWasTouched = false,
-		emailWasTouched = false, cardNumberWasTouched = false, expDateWasTouched = false, CVVWasTouched = false, triedWithEmpty = true;
+		emailWasTouched = false, cardNumberWasTouched = false, expDateWasTouched = false, CCVWasTouched = false, triedWithEmpty = true;
 
     toastr.options = {
 		"positionClass": "toast-bottom-right",
@@ -36,7 +36,7 @@
 		if(input === 'email') {emailWasTouched = true};
 		if(input === 'cardNumber') {cardNumberWasTouched = true};
 		if(input === 'expDate') {expDateWasTouched = true};
-		if(input === 'CVV') {CVVWasTouched = true};
+		if(input === 'CCV') {CCVWasTouched = true};
 
 	}
 
@@ -65,7 +65,7 @@
 			case 'expDate':
 				isValid = (elmValue.replace(/ /g,'').length === 7 && /^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/.test(elmValue.replace(/ /g,'')) && parseInt(elmValue.replace(/ /g,'').split('/')[1]) >= new Date().getFullYear());
 				break;
-			case 'CVV':
+			case 'CCV':
 				isValid = (elmValue.replace(/ /g,'').length === 3 && /^\d+$/.test(elmValue.replace(/ /g,''))) ? true : false;
 				break;
 			default:
@@ -112,7 +112,7 @@
                     card_number: userData.cardNumber,
                     card_expMonth: card_expMonth,
                     card_expYear: card_expYear,
-                    card_CVV: userData.CVV
+                    card_CCV: userData.CCV
 				},
 				success: (data) => {
                     // console.log(data);
@@ -382,12 +382,12 @@
                 <div class="wrap_input_container">
 					<div class="inputElement">
 						<label for="text">
-							CVV
+							CCV
 						</label>
-						<input type="CVV" bind:value={userData.CVV} placeholder="CVV" on:input={() => setFirstTouched('CVV')} />
+						<input type="CCV" bind:value={userData.CCV} placeholder="CCV" on:input={() => setFirstTouched('CCV')} />
 					</div>
-					{#if (!(validateInput(userData.CVV, 'CVV')) && CVVWasTouched) || (!(validateInput(userData.CVV, 'CVV')) && triedWithEmpty) }
-						<div class="error">CVV needs 3 numbers!</div>
+					{#if (!(validateInput(userData.CCV, 'CCV')) && CCVWasTouched) || (!(validateInput(userData.CCV, 'CCV')) && triedWithEmpty) }
+						<div class="error">CCV needs 3 numbers!</div>
 					{/if}
 				</div>
             </div>

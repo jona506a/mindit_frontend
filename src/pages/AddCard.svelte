@@ -8,7 +8,7 @@
     let cardData = {
         cardNumber: '',
         expDate: '',
-        CVV: ''
+        CCV: ''
     };
 
     let setAsPrimaryCard = false;
@@ -18,7 +18,7 @@
 		"preventDuplicates": true,
     }
 
-    let somethingWasTouched = false, cardNumberWasTouched = false, expDateWasTouched = false, CVVWasTouched = false, triedWithEmpty = false;
+    let somethingWasTouched = false, cardNumberWasTouched = false, expDateWasTouched = false, CCVWasTouched = false, triedWithEmpty = false;
 
     const areThereErrors = () => { return jq('.error').length > 0 ? true : false }
 
@@ -26,7 +26,7 @@
         somethingWasTouched = true;
 		if(input === 'cardNumber') {cardNumberWasTouched = true};
 		if(input === 'expDate') {expDateWasTouched = true};
-		if(input === 'CVV') {CVVWasTouched = true};
+		if(input === 'CCV') {CCVWasTouched = true};
     }
     
     const setPrimaryCard = () => {
@@ -43,7 +43,7 @@
 			case 'expDate':
 				isValid = (elmValue.replace(/ /g,'').length === 7 && /^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/.test(elmValue.replace(/ /g,'')) && parseInt(elmValue.replace(/ /g,'').split('/')[1]) >= new Date().getFullYear());
 				break;
-			case 'CVV':
+			case 'CCV':
 				isValid = (elmValue.replace(/ /g,'').length === 3 && /^\d+$/.test(elmValue.replace(/ /g,''))) ? true : false;
 				break;
 			default:
@@ -53,12 +53,12 @@
 		return isValid;
     }
     
-    const addCard = (card_number, card_expDate, CVV) => {
+    const addCard = (card_number, card_expDate, CCV) => {
          if(areThereErrors()) {
             toastr.error('Please make sure all the fields are completed and valid!');
             return;
         }
-		if(validateInput(card_expDate, 'expDate') && validateInput(card_number, 'cardNumber') && validateInput(CVV, 'CVV') && somethingWasTouched) {
+		if(validateInput(card_expDate, 'expDate') && validateInput(card_number, 'cardNumber') && validateInput(CCV, 'CCV') && somethingWasTouched) {
             const card_expMonth = card_expDate.split('/')[0];
             const card_expYear = card_expDate.split('/')[1];
             const cardIsPrimary = setAsPrimaryCard ? 1 : 0;
@@ -70,7 +70,7 @@
                     card_number: card_number,
                     card_expMonth: card_expMonth,
                     card_expYear: card_expYear,
-                    card_CVV: CVV,
+                    card_CCV: CCV,
                     card_isPrimary: cardIsPrimary,
 					token: localStorage.token
 				},
@@ -80,9 +80,9 @@
                     cardData = {
                         cardNumber: '',
                         expDate: '',
-                        CVV: ''
+                        CCV: ''
                     };
-                    somethingWasTouched = false, cardNumberWasTouched = false, expDateWasTouched = false, CVVWasTouched = false, triedWithEmpty = false;
+                    somethingWasTouched = false, cardNumberWasTouched = false, expDateWasTouched = false, CCVWasTouched = false, triedWithEmpty = false;
                     let setAsPrimaryCard = false;
 					curRoute.set('/edit-cards');
 					window.history.pushState({path: '/edit-cards'}, '', window.location.origin + '/edit-cards');
@@ -184,12 +184,12 @@
                 <div class="wrap_input_container">
                     <div class="inputElement">
                         <label for="text">
-                            CVV
+                            CCV
                         </label>
-                        <input type="text" bind:value={cardData.CVV} placeholder="ex. 865" on:input={() => setFirstTouched('CVV')} />
+                        <input type="text" bind:value={cardData.CCV} placeholder="ex. 865" on:input={() => setFirstTouched('CCV')} />
                     </div>
-                    {#if (!(validateInput(cardData.CVV, 'CVV')) && CVVWasTouched) || (!(validateInput(cardData.CVV, 'CVV')) && triedWithEmpty) }
-						<div class="error">CVV needs 3 numbers!</div>
+                    {#if (!(validateInput(cardData.CCV, 'CCV')) && CCVWasTouched) || (!(validateInput(cardData.CCV, 'CCV')) && triedWithEmpty) }
+						<div class="error">CCV needs 3 numbers!</div>
                     {/if}
                 </div>
             </div>
@@ -201,5 +201,5 @@
     <span on:click={setPrimaryCard}>Set as primary card</span>
 </div>  
 <div class="add_card_button_container">
-    <button class="purple_button" on:click={() => {addCard(cardData.cardNumber, cardData.expDate, cardData.CVV)}}>Add new card</button>
+    <button class="purple_button" on:click={() => {addCard(cardData.cardNumber, cardData.expDate, cardData.CCV)}}>Add new card</button>
 </div>  
